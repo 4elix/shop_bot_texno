@@ -1,16 +1,23 @@
-# This is a sample Python script.
+import os
+import asyncio
+from dotenv import load_dotenv
+from aiogram import Bot, Dispatcher
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from handlers.commands import router_cmd
+from handlers.text_user import router_txt
 
 
-# Press the green button in the gutter to run the script.
+async def main() -> None:
+    load_dotenv()
+    bot = Bot(token=os.getenv('TOKEN'))
+    dp = Dispatcher()
+    dp.include_routers(
+        router_cmd, router_txt
+    )
+
+    await dp.start_polling(bot)
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print('START BOT !!!')
+    asyncio.run(main())
