@@ -12,7 +12,7 @@ def check_register_user(tg_id: int) -> int:
     if user is None:
         return 404
     else:
-        return 200
+        return user
 
 
 def save_user(user_name: str, is_admin: bool, tg_id: int) -> None:
