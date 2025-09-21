@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 
 kb_register = ReplyKeyboardMarkup(resize_keyboard=True, keyboard=[[KeyboardButton(text='Зарегистрироваться')]])
 
@@ -12,3 +12,8 @@ def kb_menu(is_admin: bool):
         list_btn.append([KeyboardButton(text='Работа с объектом 🛠️')])
 
     return ReplyKeyboardMarkup(resize_keyboard=True, keyboard=list_btn)
+
+
+kb_remove = ReplyKeyboardRemove()
+
+kb_restart = ReplyKeyboardMarkup(resize_keyboard=True, keyboard=[[KeyboardButton(text='Заново 🔁')]])
