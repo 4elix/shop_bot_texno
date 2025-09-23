@@ -29,3 +29,10 @@ kb_category_save_or_cancel = InlineKeyboardMarkup(inline_keyboard=[
     ]
 ])
 
+kb_product_save_or_cancel = InlineKeyboardMarkup(inline_keyboard=[
+    [
+        InlineKeyboardButton(text='Подтверждаю', callback_data='product_save'),
+        InlineKeyboardButton(text='Отменить', callback_data='product_cancel')
+    ]
+])
+

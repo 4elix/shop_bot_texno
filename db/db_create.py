@@ -29,6 +29,7 @@ def create_main_table() -> None:
             price FLOAT,
             quantity INTEGER,
             description TEXT,
+            image TEXT,
             category_id INTEGER REFERENCES categories(category_id) 
         );
     ''')

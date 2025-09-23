@@ -20,6 +20,7 @@ class CUProductState(StatesGroup):
     price = State()
     quantity = State()
     description = State()
+    image = State()
     category_id = State()
 
 
