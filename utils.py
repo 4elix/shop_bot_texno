@@ -26,3 +26,8 @@ class CUProductState(StatesGroup):
 
 class DeleteProductState(StatesGroup):
     product_id = State()
+
+
+class ShowProduct(StatesGroup):
+    cat_name = State()
+    title = State()

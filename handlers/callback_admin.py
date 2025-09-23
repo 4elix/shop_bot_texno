@@ -2,8 +2,9 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-from keyboards.reply import kb_remove, kb_restart
-from keyboards.inline import kb_work_object
+from db.part_user import get_status_admin
+from keyboards.inline import kb_work_object, option_object
+from keyboards.reply import kb_remove, kb_restart, kb_menu
 from db.part_admin import create_category, update_category, create_product, update_product
 from utils import CUCategoryState, DeleteCategoryState, CUProductState, DeleteProductState
 
@@ -28,10 +29,10 @@ async def react_btn_create(callback: CallbackQuery, state: FSMContext):
 
     if obj == 'categories':
         await state.set_state(CUCategoryState.name)
-        await callback.answer('Введите название категории', kb_restart)
+        await callback.message.answer('Введите название категории', reply_markup=kb_restart)
     elif obj == 'products':
         await state.set_state(CUProductState.title)
-        await callback.answer('Введите название товара', kb_restart)
+        await callback.message.answer('Введите название товара', reply_markup=kb_restart)
 
 
 @router_callback_admin.callback_query(F.data.startswith('update_'))
@@ -40,10 +41,10 @@ async def react_btn_update(callback: CallbackQuery, state: FSMContext):
 
     if obj == 'categories':
         await state.set_state(CUCategoryState.category_id)
-        await callback.answer('Введите Id для изменения объекта', kb_restart)
+        await callback.message.answer('Введите Id для изменения объекта', reply_markup=kb_restart)
     elif obj == 'products':
         await state.set_state(CUProductState.product_id)
-        await callback.answer('Введите Id для изменения объекта', kb_restart)
+        await callback.message.answer('Введите Id для изменения объекта', reply_markup=kb_restart)
 
 
 @router_callback_admin.callback_query(F.data.startswith('delete_'))
@@ -52,13 +53,13 @@ async def react_btn_delete(callback: CallbackQuery, state: FSMContext):
 
     if obj == 'categories':
         await state.set_state(DeleteCategoryState.category_id)
-        await callback.answer('Введите Id для удаления объекта', kb_restart)
+        await callback.message.answer('Введите Id для удаления объекта', reply_markup=kb_restart)
     elif obj == 'products':
         await state.set_state(DeleteProductState.product_id)
-        await callback.answer('Введите Id для удаления объекта', kb_restart)
+        await callback.message.answer('Введите Id для удаления объекта', reply_markup=kb_restart)
 
 
-@router_callback_admin.callback_query(F.data == 'save_category')
+@router_callback_admin.callback_query(F.data == 'category_save')
 async def react_btn_save_category(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     category_id = data.get('category_id', None)
@@ -90,7 +91,7 @@ async def react_btn_category_cancel(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer(text, reply_markup=kb_work_object('categories', 'категорию'))
 
 
-@router_callback_admin.callback_query(F.data == 'save_product')
+@router_callback_admin.callback_query(F.data == 'product_save')
 async def react_btn_save_product(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
@@ -122,3 +123,15 @@ async def react_btn_product_cancel(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     text = 'Хорошо, выберете операцию для объекта'
     await callback.message.answer(text, reply_markup=kb_work_object('products', 'продукт'))
+
+
+@router_callback_admin.callback_query(F.data == 'back_to_menu')
+async def react_btn_back_to_menu(callback: CallbackQuery):
+    chat_id = callback.message.chat.id
+    is_admin = get_status_admin(chat_id)[0]
+    await callback.message.answer('Хорошо, вот меню', reply_markup=kb_menu(is_admin))
+
+
+@router_callback_admin.callback_query(F.data == 'back_to_option')
+async def react_btn_back_to_option(callback: CallbackQuery):
+    await callback.message.answer('Выберите с каким объектом будете работать', reply_markup=option_object)

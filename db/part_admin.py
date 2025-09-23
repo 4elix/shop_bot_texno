@@ -8,7 +8,7 @@ def create_category(name: str) -> int:
     connect, cursor = connect_db()
 
     try:
-        cursor.execute('INSERT INTO categories (name) VALUES (%s)', (name, ))
+        cursor.execute('INSERT INTO categories (category_name) VALUES (%s)', (name, ))
         connect.commit()
         return 200
     except Exception as error:
@@ -20,7 +20,7 @@ def update_category(id_category: int, name: str) -> int:
     connect, cursor = connect_db()
 
     try:
-        cursor.execute('UPDATE category SET category_name = %s WHERE category_id = %s', (name, id_category))
+        cursor.execute('UPDATE categories SET category_name = %s WHERE category_id = %s', (name, id_category))
         connect.commit()
 
         return 200
@@ -70,15 +70,14 @@ def update_product(product_id: int, title: str, price: float,
     try:
         cursor.execute('''
             UPDATE products SET 
-            product_id = %s,
             title = %s,
             price = %s,
             quantity = %s,
             description = %s,
             image = %s,
             category_id = %s
-            WHERE category_id = %s
-        ''', (product_id, title, price, quantity, description, image, category_id))
+            WHERE product_id = %s
+        ''', (title, price, quantity, description, image, category_id, product_id))
         connect.commit()
 
         return 200
