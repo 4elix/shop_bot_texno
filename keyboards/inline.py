@@ -11,15 +11,15 @@ option_object = InlineKeyboardMarkup(inline_keyboard=[
 ])
 
 
-def kb_work_object(obj, name):
-    list_objects = [
+def kb_work_object(obj: str, name: str):
+    objects = [
         (f'create_{obj}', f'Создать {name}'),
         (f'update_{obj}', f'Изменить {name}'),
         (f'delete_{obj}', f'Удалить {name}')
     ]
 
     list_btn = []
-    for work, name in list_objects:
+    for work, name in objects:
         list_btn.append([InlineKeyboardButton(text=name, callback_data=work)])
 
     list_btn.append([InlineKeyboardButton(text='Назад', callback_data='back_to_option')])
@@ -41,7 +41,7 @@ kb_product_save_or_cancel = InlineKeyboardMarkup(inline_keyboard=[
 ])
 
 
-def kb_back_menu_or_product(cat_name):
+def kb_back_menu_or_product(cat_name: str):
     markup = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text='Назад в меню', callback_data='back_menu'),

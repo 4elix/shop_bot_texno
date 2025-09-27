@@ -25,6 +25,3 @@ async def main() -> None:
 if __name__ == '__main__':
     print('START BOT !!!')
     asyncio.run(main())
-
-
-# kb_work_object / option_object нужна кнопка назад
